@@ -1,5 +1,6 @@
 <?php
     include("database.php");
+    
 
     if($_SERVER["REQUEST_METHOD"]== "POST")
     {
@@ -45,40 +46,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Тестовая таблица</title>
 </head>
-    <h2>Регистрация</h2>
-    <form action="<?php echo htmlspecialchars( $_SERVER["PHP_SELF"]); ?>" method="post">
-        <label>Логин</label><br>
-        <input name = "name" type="text"><br>
-        <label for="">Почта</label><br>
-        <input name = "email" type="text"><br>
-        <label>Пароль</label><br>
-        <input name = "password" type="password"><br>
-        <input type="submit" value="Зарегистрироваться"><br>
-    </form>
-    <h3>Список пользователей</h3>
-    <table border = "1" cellpadding ="5" cellspacing ="0">
-    <tr>
-        <th>ID</th>
-        <th>Имя</th>
-        <th>Почта</th>
-    </tr>
-    <?php if (!empty($users)):?>
-        <?php foreach ($users as $user ): ?>
-            <tr>
-            <td><?php echo $user['id']; ?></td>
-            <td><?php echo htmlspecialchars($user['name']);?></td>
-            <td><?php echo htmlspecialchars($user['email']);?></td>
-            </tr>
-            <?php endforeach; ?>
-            <?php else: ?>
-                <tr>
-                    <td colspan="3">Пользователи отсутствуют</td>
-                </tr>
-                <?php endif; ?>
-                </table>
+    <body>
+        <h2>Регистрация</h2>
+        <form action="<?php echo htmlspecialchars( $_SERVER["PHP_SELF"]); ?>" method="post">
+            <label>Логин</label><br>
+            <input name = "name" type="text"><br>
+            <label for="">Почта</label><br>
+            <input name = "email" type="text"><br>
+            <label>Пароль</label><br>
+            <input name = "password" type="password"><br>
+            <input type="submit" value="Зарегистрироваться"><br>
+        </form>
+        <h3>Список пользователей</h3>
+        <table id="myTable" border = "1" cellpadding ="5" cellspacing ="0">
+            <thead>
+        <tr>
+            <th onclick="sortTable(0)" >ID</th>
+            <th onclick="sortTable(1)">Имя</th>
+            <th onclick="sortTable(2)">Почта</th>
+        </tr>
+        </thead>
+            <tbody>
+                <?php if (!empty($users)):?>
+                    <?php foreach ($users as $user ): ?>
+                        <tr>
+                        <td><?php echo $user['id']; ?></td>
+                        <td><?php echo htmlspecialchars($user['name']);?></td>
+                        <td><?php echo htmlspecialchars($user['email']);?></td>
+                        </tr>
+                        <?php endforeach; ?>
+                        <?php else: ?>
+                            <tr>
+                                <td colspan="3">Пользователи отсутствуют</td>
+                            </tr>
+                            <?php endif; ?>
+            </tbody>
+        </table>
                 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-        <button type="submit" name="delete_all" onclick="return confirm('Вы уверены, что хотите удалить все данные?')">Удалить все данные</button>
-    </form>
+                    <button type="submit" name="delete_all" onclick="return confirm('Вы уверены, что хотите удалить все данные?')">Удалить все данные</button>
+                </form>
                 <?php 
                 if (isset($_POST['delete_all'])) {
                     try {
@@ -97,7 +103,9 @@
                     }
                 }
                 ?>
-</body>
+            <script src="index.js" defer></script>
+
+    </body>
 </html>
 <?php
 $conn->close(); // Закрываем соединение
