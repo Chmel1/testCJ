@@ -1,6 +1,5 @@
 <?php
     include("database.php");
-    
 
     if($_SERVER["REQUEST_METHOD"]== "POST")
     {
@@ -35,7 +34,9 @@
         while($row = $result -> fetch_assoc()){
             $users[] = $row;
         }
-    }catch(mysqli_sql_exception $e){
+    }
+    catch(mysqli_sql_exception $e)
+    {
         echo "Ошибка при извлечении данных". $e->getMessage();
     }
 ?>
@@ -47,6 +48,8 @@
     <title>Тестовая таблица</title>
 </head>
     <body>
+    <script src="https://testcj/index.js" defer></script>
+
         <h2>Регистрация</h2>
         <form action="<?php echo htmlspecialchars( $_SERVER["PHP_SELF"]); ?>" method="post">
             <label>Логин</label><br>
@@ -85,25 +88,27 @@
                 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                     <button type="submit" name="delete_all" onclick="return confirm('Вы уверены, что хотите удалить все данные?')">Удалить все данные</button>
                 </form>
-                <?php 
-                if (isset($_POST['delete_all'])) {
-                    try {
-                        // Выполняем удаление всех записей из таблицы
-                        $deleteQuery = "DELETE FROM users";
-                        if ($conn->query($deleteQuery)) {
-                            echo "Все данные были успешно удалены";
-                            // После удаления можно обновить страницу
-                            header("Location: " . $_SERVER['PHP_SELF']);
-                            exit();
-                        } else {
-                            echo "Ошибка при удалении данных: " . $conn->error;
+                    <?php 
+                    if (isset($_POST['delete_all'])) {
+                        try {
+                            // Выполняем удаление всех записей из таблицы
+                            $deleteQuery = "DELETE FROM users";
+                            if ($conn->query($deleteQuery)) {
+                                echo "Все данные были успешно удалены";
+                                // После удаления можно обновить страницу
+                                header("Location: " . $_SERVER['PHP_SELF']);
+                                exit();
+                            } else {
+                                echo "Ошибка при удалении данных: " . $conn->error;
+                            }
+                        } 
+                        catch (mysqli_sql_exception $e) 
+                        {
+                            echo "Ошибка при удалении данных: " . $e->getMessage();
                         }
-                    } catch (mysqli_sql_exception $e) {
-                        echo "Ошибка при удалении данных: " . $e->getMessage();
                     }
-                }
                 ?>
-            <script src="index.js" defer></script>
+            
 
     </body>
 </html>
